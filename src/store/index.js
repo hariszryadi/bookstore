@@ -4,12 +4,23 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
+    state: {
+        sideBar: false
+    },
+    mutations: {
+        setSideBar: (state, value) => {
+            state.sideBar = value
+        }
+    },
+    actions: {
+        setSideBar: ({commit}, value) => {
+            commit('setSidebar', value)
+        }
+    },
+    getters: {
+        sideBar: state => state.sideBar
+    },
+    modules: {
+        
+    }
 })
