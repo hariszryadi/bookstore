@@ -7,15 +7,31 @@
             <v-toolbar-title>Bookstore</v-toolbar-title>
         </v-toolbar>
 
-        <v-list>
+        <v-list v-if="guest">
             <v-list-item>
-                <v-btn depressed block rounded color="secondary" class="white--text">
+                <v-btn @click="register()" depressed block rounded color="secondary" class="white--text">
                     Register <v-icon right dark>person_add</v-icon>
                 </v-btn>
             </v-list-item>
             <v-list-item>
-                <v-btn block rounded depressed color="green accent-2" class="white--text">
+                <v-btn @click="login()" block rounded depressed color="green accent-2" class="white--text">
                     Login <v-icon right dark>lock_open</v-icon>
+                </v-btn>
+            </v-list-item>
+        </v-list>
+        <v-list v-if="!guest">
+            <v-list-item>
+                <v-list-item-avatar>
+                    <img v-if="user.avatar==null" src="getImage('img/notfound.png')">
+                    <img v-else :src="getImage(user.avatar)">
+                </v-list-item-avatar>
+                <v-list-item-content>
+                    <v-list-item-title>{{ user.name }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+                <v-btn block small rounded depressed color="error lighten-1" class="white--text" @click.stop="logout();">
+                    Logout <v-icon small right dark>settings_power</v-icon>
                 </v-btn>
             </v-list-item>
         </v-list>
@@ -45,21 +61,62 @@
         }),
         computed: {
             ...mapGetters({
-                sideBar : 'sideBar'
+                sideBar : 'sideBar',
+                user : 'auth/user',
+                guest : 'auth/guest'
             }),
             drawer: {
                 get() {
                     return this.sideBar
                 },
                 set(value) {
-                    this.setSideBar(value)
+                    this.$store.commit('setSideBar', value)
                 }
             }
         },
         methods: {
             ...mapActions({
-                setSideBar : 'setSideBar'
-            })
+                setSideBar : 'setSideBar',
+                setStatusDialog : 'dialog/setStatus',
+                setComponent : 'dialog/setComponent',
+                setAuth : 'auth/set',
+                setAlert : 'alert/set'
+            }),
+            login() {
+                this.setStatusDialog(true)
+                this.setComponent('login')
+                this.setSideBar(false)
+            },
+            register() {
+                this.setStatusDialog(true)
+                this.setComponent('register')
+                this.setSideBar(false)
+            },
+            logout() {
+                let config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.user.api_token
+                    }
+                }
+                this.axios.post('/logout', {}, config)
+                    .then(() => {
+                        this.setAuth({})
+                        this.setAlert({
+                            status: true,
+                            text: 'Logout successfully',
+                            type: 'warning'
+                        })
+                        this.setSideBar(false)
+                    })
+                    .catch((error) => {
+                        let responses = error.response
+                        this.setAlert({
+                            status: true,
+                            text: responses.data.message,
+                            type: 'error'
+                        })
+                    })
+            }
         }
     }
 </script>
