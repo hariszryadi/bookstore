@@ -2,12 +2,12 @@
     <div>
         <v-container grid-list-md>
             <v-subheader>{{ category.name }}</v-subheader>
-            <v-img v-if="category.image" :src="getImage(category.image)" height="150px"></v-img>
+            <v-img :src="getImage(category.image)" height="150px"></v-img>
             <v-subheader>Books by "{{ category.name }} category"</v-subheader>
             <v-layout row wrap>
                 <v-flex v-for="book in books" xs6 :key="book.id">
                     <v-card :to="'/book/' + book.slug">
-                        <v-img v-if="book.cover" :src="getImage(book.cover)" height="150px">
+                        <v-img :src="getImage(book.cover)" height="150px">
                             <v-container fill-height fluid pa-2>
                                 <v-flex xs12 align-end flexbox>
                                     <span class="title white--text text-block" vtext="book.title"></span>

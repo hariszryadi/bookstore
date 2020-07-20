@@ -52,6 +52,7 @@
     import Search from '@/views/Search.vue'
     import Login from '@/views/Login.vue'
     import Register from '@/views/Register.vue'
+    import Cart from '@/views/Cart.vue'
 
     export default {
         name: 'App',
@@ -62,7 +63,8 @@
             CAlert,
             Search,
             Login,
-            Register
+            Register,
+            Cart
         },
         methods: {
             ...mapActions({
