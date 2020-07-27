@@ -50,6 +50,9 @@ export default {
                 cartItem.quantity--
                 commit('update', cartItem)
             }
+        },
+        set: ({commit}, payload) => {
+            commit('set', payload)
         }
     },
     getters: {

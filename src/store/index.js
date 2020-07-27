@@ -11,7 +11,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         sideBar: false,
-        prevUrl: ''
+        prevUrl: '',
+        payment: []
     },
     mutations: {
         setSideBar: (state, value) => {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
         },
         setPrevUrl: (state, value) => {
             state.prevUrl = value
+        },
+        setPayment: (state, value) => {
+            state.payment = value
         }
     },
     actions: {
@@ -27,11 +31,15 @@ export default new Vuex.Store({
         },
         setPrevUrl: ({commit}, value) => {
             commit('setPrevUrl', value)
+        },
+        setPayment: ({commit}, value) => {
+            commit('setPayment', value)
         }
     },
     getters: {
         sideBar: state => state.sideBar,
-        prevUrl: state => state.prevUrl
+        prevUrl: state => state.prevUrl,
+        payment: state => state.payment
     },
     modules: {
         cart,
